@@ -862,7 +862,7 @@ The library includes several examples demonstrating various features:
 
 -   Widgets and layouts often accept `theme` and `bg_color` parameters.
 -   Specific style parameters (like `radius`, `text_color`, `text_size`) can be passed during creation.
--   The library includes support for themes loaded from TOML files (`src/styles.v`, `src/style_*.v`).
+-   The library includes support for themes loaded from JSON files (`src/styles.v`, `src/style_*.v`).
 -   `src/style_4colors.v` and `src/style_accent_color.v` provide functions (`load_4colors_style`, `load_accent_color_style`) to apply themes based on a few base colors.
 -   The `users_resizable.v` example shows adding a theme switching shortcut (`window.add_shortcut_theme()`).
 

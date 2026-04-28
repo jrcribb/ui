@@ -27,7 +27,7 @@ pub mut:
 pub fn new_window(cfg Config) &WebView {
 	mut obj := unsafe { nil }
 	$if macos {
-		obj = C.new_darwin_web_view(cfg.url, cfg.title, cfg.js_on_init)
+		obj = new_darwin_web_view(cfg.url, cfg.title, cfg.js_on_init)
 	}
 	$if linux {
 		create_linux_web_view(cfg.url, cfg.title)
@@ -50,14 +50,14 @@ pub fn exec(scriptSource string) {
 
 pub fn get_global_js_val() string {
 	$if macos {
-		return C.darwin_get_webview_js_val()
+		return darwin_get_webview_js_val()
 	}
 	return ''
 }
 
 pub fn get_global_cookie_val() string {
 	$if macos {
-		return C.darwin_get_webview_cookie_val()
+		return darwin_get_webview_cookie_val()
 	}
 	return ''
 }
@@ -81,7 +81,7 @@ pub fn (mut wv WebView) navigate(url string) {
 
 pub fn (w &WebView) close() {
 	$if macos {
-		C.darwin_webview_close()
+		darwin_webview_close()
 	}
 	$if linux {
 		// Untested: not sure!
