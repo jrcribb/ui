@@ -160,7 +160,7 @@ fn (mut b BoxLayout) set_root_layout() {
 	if mut b.parent is Window {
 		// TODO: before removing line below test if this is necessary
 		// b.ui.window = unsafe { b.parent }
-		mut window := unsafe { &Window(voidptr(b.parent)) }
+		mut window := unsafe { b.parent }
 		if b.is_root_layout {
 			window.root_layout = b
 			// window.update_layout()

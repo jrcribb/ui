@@ -72,9 +72,9 @@ fn (mut s SubWindow) init(parent Layout) {
 	s.ui = pui
 	// Subscriber needs here to be before initialization of all its children
 	mut subscriber := parent.get_subscriber()
-	subscriber.subscribe_method(events.on_mouse_down, sw_mouse_down, unsafe { s })
-	subscriber.subscribe_method(events.on_mouse_move, sw_mouse_move, unsafe { s })
-	subscriber.subscribe_method(events.on_mouse_up, sw_mouse_up, unsafe { s })
+	subscriber.subscribe_method(events.on_mouse_down, sw_mouse_down, s)
+	subscriber.subscribe_method(events.on_mouse_move, sw_mouse_move, s)
+	subscriber.subscribe_method(events.on_mouse_up, sw_mouse_up, s)
 	s.ui.window.evt_mngr.add_receiver(s, [events.on_mouse_down])
 	// children initialized after so that subcribe_method
 	mut l := s.layout
@@ -94,9 +94,9 @@ fn (mut s SubWindow) init(parent Layout) {
 @[manualfree]
 pub fn (mut s SubWindow) cleanup() {
 	mut subscriber := s.parent.get_subscriber()
-	subscriber.unsubscribe_method(events.on_mouse_down, unsafe { s })
-	subscriber.unsubscribe_method(events.on_mouse_move, unsafe { s })
-	subscriber.unsubscribe_method(events.on_mouse_up, unsafe { s })
+	subscriber.unsubscribe_method(events.on_mouse_down, s)
+	subscriber.unsubscribe_method(events.on_mouse_move, s)
+	subscriber.unsubscribe_method(events.on_mouse_up, s)
 	mut u := s.get_ui()
 	u.window.evt_mngr.rm_receiver(s, [events.on_mouse_down])
 	unsafe { s.free() }

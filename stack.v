@@ -208,7 +208,7 @@ fn (mut s Stack) set_root_layout() {
 	if mut s.parent is Window {
 		// TODO: before removing line below test if this is necessary
 		// s.ui.window = unsafe { s.parent }
-		mut window := unsafe { &Window(voidptr(s.parent)) }
+		mut window := unsafe { s.parent }
 		if s.is_root_layout {
 			window.root_layout = s
 			s.real_x, s.real_y = 0, 0

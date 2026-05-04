@@ -16,9 +16,7 @@ fn clipping_start(c ClippingWidget, mut d DrawDevice) !ClippingState {
 		mut x, mut y := c.x, c.y
 		if c is ScrollableWidget {
 			if has_scrollview(c) {
-				ptr := c as voidptr
-				sw := unsafe { &ScrollableWidget(ptr) }
-				x, y = unsafe { sw.scrollview }.orig_xy()
+				x, y = c.scrollview.orig_xy()
 			}
 		}
 		existing := d.get_clipping()

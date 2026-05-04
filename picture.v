@@ -79,8 +79,8 @@ fn (mut pic Picture) init(parent Layout) {
 	mut u := parent.get_ui()
 	pic.ui = u
 	mut subscriber := parent.get_subscriber()
-	subscriber.subscribe_method(events.on_click, pic_click, unsafe { pic })
-	subscriber.subscribe_method(events.on_mouse_down, pic_mouse_down, unsafe { pic })
+	subscriber.subscribe_method(events.on_click, pic_click, pic)
+	subscriber.subscribe_method(events.on_mouse_down, pic_mouse_down, pic)
 	pic.ui.window.evt_mngr.add_receiver(pic, [events.on_mouse_down])
 	/*
 	if pic.image.width > 0 {
@@ -97,8 +97,8 @@ fn (mut pic Picture) init(parent Layout) {
 		}
 		if pic.use_cache && pic.path in u.resource_cache {
 			pic.image = unsafe { u.resource_cache[pic.path] }
-		} else if pic.ui.dd is DrawDeviceContext {
-			mut dd := unsafe { &DrawDeviceContext(voidptr(pic.ui.dd)) }
+		} else if mut pic.ui.dd is DrawDeviceContext {
+			mut dd := pic.ui.dd
 			if img := dd.create_image(pic.path) {
 				pic.image = img
 				u.resource_cache[pic.path] = pic.image
@@ -130,8 +130,8 @@ fn (mut pic Picture) init(parent Layout) {
 @[manualfree]
 pub fn (mut p Picture) cleanup() {
 	mut subscriber := p.parent.get_subscriber()
-	subscriber.unsubscribe_method(events.on_click, unsafe { p })
-	subscriber.unsubscribe_method(events.on_mouse_down, unsafe { p })
+	subscriber.unsubscribe_method(events.on_click, p)
+	subscriber.unsubscribe_method(events.on_mouse_down, p)
 	p.ui.window.evt_mngr.rm_receiver(p, [events.on_mouse_down])
 	unsafe { p.free() }
 }

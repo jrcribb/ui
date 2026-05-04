@@ -172,24 +172,24 @@ fn (mut b Button) init(parent Layout) {
 		}
 	}
 	mut subscriber := parent.get_subscriber()
-	subscriber.subscribe_method(events.on_key_down, btn_key_down, unsafe { b })
-	subscriber.subscribe_method(events.on_mouse_down, btn_mouse_down, unsafe { b })
-	subscriber.subscribe_method(events.on_click, btn_click, unsafe { b })
-	subscriber.subscribe_method(events.on_touch_down, btn_mouse_down, unsafe { b })
-	subscriber.subscribe_method(events.on_mouse_move, btn_mouse_move, unsafe { b })
-	subscriber.subscribe_method(events.on_mouse_up, btn_mouse_up, unsafe { b })
-	subscriber.subscribe_method(events.on_touch_up, btn_mouse_up, unsafe { b })
+	subscriber.subscribe_method(events.on_key_down, btn_key_down, b)
+	subscriber.subscribe_method(events.on_mouse_down, btn_mouse_down, b)
+	subscriber.subscribe_method(events.on_click, btn_click, b)
+	subscriber.subscribe_method(events.on_touch_down, btn_mouse_down, b)
+	subscriber.subscribe_method(events.on_mouse_move, btn_mouse_move, b)
+	subscriber.subscribe_method(events.on_mouse_up, btn_mouse_up, b)
+	subscriber.subscribe_method(events.on_touch_up, btn_mouse_up, b)
 	b.ui.window.evt_mngr.add_receiver(b, [events.on_mouse_down, events.on_mouse_move])
 }
 
 @[manualfree]
 fn (mut b Button) cleanup() {
 	mut subscriber := b.parent.get_subscriber()
-	subscriber.unsubscribe_method(events.on_key_down, unsafe { b })
-	subscriber.unsubscribe_method(events.on_mouse_down, unsafe { b })
-	subscriber.unsubscribe_method(events.on_click, unsafe { b })
-	subscriber.unsubscribe_method(events.on_touch_down, unsafe { b })
-	subscriber.unsubscribe_method(events.on_mouse_move, unsafe { b })
+	subscriber.unsubscribe_method(events.on_key_down, b)
+	subscriber.unsubscribe_method(events.on_mouse_down, b)
+	subscriber.unsubscribe_method(events.on_click, b)
+	subscriber.unsubscribe_method(events.on_touch_down, b)
+	subscriber.unsubscribe_method(events.on_mouse_move, b)
 	b.ui.window.evt_mngr.rm_receiver(b, [events.on_mouse_down, events.on_mouse_move])
 	unsafe { b.free() }
 }

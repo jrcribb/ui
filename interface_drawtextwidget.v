@@ -144,8 +144,8 @@ pub fn (mut w DrawTextWidget) load_style_(d DrawDevice, ts TextStyle) {
 			int(ts.align), int(ts.vertical_align))
 	}
 	$if !screenshot ? {
-		if w.ui.dd is DrawDeviceContext {
-			gg_ := unsafe { &DrawDeviceContext(voidptr(w.ui.dd)) }
+		if mut w.ui.dd is DrawDeviceContext {
+			gg_ := w.ui.dd
 			fons := gg_.ft.fons
 			fons.set_font(w.ui.fonts.hash[ts.font_name])
 

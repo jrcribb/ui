@@ -293,25 +293,11 @@ pub fn scrollview_restore_offset(w &ScrollableWidget, orig bool) {
 
 // TODO: documentation
 pub fn scrollview_delegate_parent_scrollview(mut w Widget) {
-	// Note: this used to mutate `w.scrollview` through a smart-cast on
-	// `ScrollableWidget`, but the current V cgen generates broken interface
-	// unwrap code for that pattern. Set the parent's scrollview directly on
-	// the concrete type instead.
 	parent := w.parent
-	mut sv := &ScrollView(unsafe { nil })
-	if parent is Stack {
-		sv = parent.scrollview
-	} else if parent is CanvasLayout {
-		sv = parent.scrollview
-	} else {
-		return
-	}
-	if mut w is Stack {
-		w.scrollview = sv
-	} else if mut w is CanvasLayout {
-		w.scrollview = sv
-	} else if mut w is ChunkView {
-		w.scrollview = sv
+	if parent is Stack && mut w is ScrollableWidget {
+		w.scrollview = parent.scrollview
+	} else if parent is CanvasLayout && mut w is ScrollableWidget {
+		w.scrollview = parent.scrollview
 	}
 }
 
@@ -462,16 +448,16 @@ fn (mut sv ScrollView) init(parent Layout) {
 	sv.parent = parent
 
 	mut subscriber := parent.get_subscriber()
-	subscriber.subscribe_method(events.on_click, scrollview_click, unsafe { sv })
-	subscriber.subscribe_method(events.on_scroll, scrollview_scroll, unsafe { sv })
-	subscriber.subscribe_method(events.on_key_down, scrollview_key_down, unsafe { sv })
-	subscriber.subscribe_method(events.on_mouse_down, scrollview_mouse_down, unsafe { sv })
-	subscriber.subscribe_method(events.on_mouse_up, scrollview_mouse_up, unsafe { sv })
-	subscriber.subscribe_method(events.on_mouse_move, scrollview_mouse_move, unsafe { sv })
+	subscriber.subscribe_method(events.on_click, scrollview_click, sv)
+	subscriber.subscribe_method(events.on_scroll, scrollview_scroll, sv)
+	subscriber.subscribe_method(events.on_key_down, scrollview_key_down, sv)
+	subscriber.subscribe_method(events.on_mouse_down, scrollview_mouse_down, sv)
+	subscriber.subscribe_method(events.on_mouse_up, scrollview_mouse_up, sv)
+	subscriber.subscribe_method(events.on_mouse_move, scrollview_mouse_move, sv)
 	$if android {
-		subscriber.subscribe_method(events.on_touch_down, scrollview_mouse_down, unsafe { sv })
-		subscriber.subscribe_method(events.on_touch_up, scrollview_mouse_up, unsafe { sv })
-		subscriber.subscribe_method(events.on_touch_move, scrollview_mouse_move, unsafe { sv })
+		subscriber.subscribe_method(events.on_touch_down, scrollview_mouse_down, sv)
+		subscriber.subscribe_method(events.on_touch_up, scrollview_mouse_up, sv)
+		subscriber.subscribe_method(events.on_touch_move, scrollview_mouse_move, sv)
 	}
 }
 
@@ -479,16 +465,16 @@ fn (mut sv ScrollView) init(parent Layout) {
 @[manualfree]
 pub fn (mut sv ScrollView) cleanup() {
 	mut subscriber := sv.parent.get_subscriber()
-	subscriber.unsubscribe_method(events.on_click, unsafe { sv })
-	subscriber.unsubscribe_method(events.on_scroll, unsafe { sv })
-	subscriber.unsubscribe_method(events.on_key_down, unsafe { sv })
-	subscriber.unsubscribe_method(events.on_mouse_down, unsafe { sv })
-	subscriber.unsubscribe_method(events.on_mouse_up, unsafe { sv })
-	subscriber.unsubscribe_method(events.on_mouse_move, unsafe { sv })
+	subscriber.unsubscribe_method(events.on_click, sv)
+	subscriber.unsubscribe_method(events.on_scroll, sv)
+	subscriber.unsubscribe_method(events.on_key_down, sv)
+	subscriber.unsubscribe_method(events.on_mouse_down, sv)
+	subscriber.unsubscribe_method(events.on_mouse_up, sv)
+	subscriber.unsubscribe_method(events.on_mouse_move, sv)
 	$if android {
-		subscriber.unsubscribe_method(events.on_touch_down, unsafe { sv })
-		subscriber.unsubscribe_method(events.on_touch_up, unsafe { sv })
-		subscriber.unsubscribe_method(events.on_touch_move, unsafe { sv })
+		subscriber.unsubscribe_method(events.on_touch_down, sv)
+		subscriber.unsubscribe_method(events.on_touch_up, sv)
+		subscriber.unsubscribe_method(events.on_touch_move, sv)
 	}
 	unsafe { sv.free() }
 }
@@ -502,9 +488,8 @@ pub fn (sv &ScrollView) free() {
 fn (sv &ScrollView) parent_offset() (int, int) {
 	parent := sv.parent
 	if parent is ScrollableWidget {
-		psw := unsafe { &ScrollableWidget(parent as voidptr) }
-		if psw.scrollview != unsafe { nil } {
-			psv := psw.scrollview
+		if parent.scrollview != unsafe { nil } {
+			psv := parent.scrollview
 			mut ox, mut oy := psv.parent_offset()
 			if psv.active_x {
 				ox += psv.offset_x

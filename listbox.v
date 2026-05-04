@@ -166,15 +166,15 @@ fn (mut lb ListBox) init(parent Layout) {
 			texts, lb.selection)
 	}
 	mut subscriber := parent.get_subscriber()
-	subscriber.subscribe_method(events.on_click, on_change, unsafe { lb })
-	subscriber.subscribe_method(events.on_mouse_down, lb_mouse_down, unsafe { lb })
-	subscriber.subscribe_method(events.on_mouse_move, lb_mouse_move, unsafe { lb })
-	subscriber.subscribe_method(events.on_mouse_up, lb_mouse_up, unsafe { lb })
-	subscriber.subscribe_method(events.on_key_up, lb_key_up, unsafe { lb })
+	subscriber.subscribe_method(events.on_click, on_change, lb)
+	subscriber.subscribe_method(events.on_mouse_down, lb_mouse_down, lb)
+	subscriber.subscribe_method(events.on_mouse_move, lb_mouse_move, lb)
+	subscriber.subscribe_method(events.on_mouse_up, lb_mouse_up, lb)
+	subscriber.subscribe_method(events.on_key_up, lb_key_up, lb)
 	lb.ui.window.evt_mngr.add_receiver(lb, [events.on_mouse_down, events.on_scroll])
 	// println("lb $lb.files_dropped")
 	if lb.files_dropped {
-		subscriber.subscribe_method(events.on_files_dropped, on_files_dropped, unsafe { lb })
+		subscriber.subscribe_method(events.on_files_dropped, on_files_dropped, lb)
 		// lb.ui.window.evt_mngr.add_receiver(lb, [events.on_files_dropped])
 	}
 }
@@ -182,14 +182,14 @@ fn (mut lb ListBox) init(parent Layout) {
 @[manualfree]
 fn (mut lb ListBox) cleanup() {
 	mut subscriber := lb.parent.get_subscriber()
-	subscriber.unsubscribe_method(events.on_click, unsafe { lb })
-	subscriber.unsubscribe_method(events.on_mouse_down, unsafe { lb })
-	subscriber.unsubscribe_method(events.on_mouse_move, unsafe { lb })
-	subscriber.unsubscribe_method(events.on_mouse_up, unsafe { lb })
-	subscriber.unsubscribe_method(events.on_key_up, unsafe { lb })
+	subscriber.unsubscribe_method(events.on_click, lb)
+	subscriber.unsubscribe_method(events.on_mouse_down, lb)
+	subscriber.unsubscribe_method(events.on_mouse_move, lb)
+	subscriber.unsubscribe_method(events.on_mouse_up, lb)
+	subscriber.unsubscribe_method(events.on_key_up, lb)
 	lb.ui.window.evt_mngr.rm_receiver(lb, [events.on_mouse_down, events.on_scroll])
 	if lb.files_dropped {
-		subscriber.unsubscribe_method(events.on_files_dropped, unsafe { lb })
+		subscriber.unsubscribe_method(events.on_files_dropped, lb)
 		// lb.ui.window.evt_mngr.rm_receiver(lb, [events.on_files_dropped])
 	}
 

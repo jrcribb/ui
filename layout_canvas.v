@@ -194,24 +194,24 @@ fn (mut c CanvasLayout) init(parent Layout) {
 	c.init_size()
 	// IMPORTANT: Subscriber needs here to be before initialization of all its children
 	mut subscriber := parent.get_subscriber()
-	subscriber.subscribe_method(events.on_click, canvas_layout_click, unsafe { c })
-	subscriber.subscribe_method(events.on_mouse_down, canvas_layout_mouse_down, unsafe { c })
-	subscriber.subscribe_method(events.on_mouse_up, canvas_layout_mouse_up, unsafe { c })
-	subscriber.subscribe_method(events.on_mouse_move, canvas_layout_mouse_move, unsafe { c })
-	subscriber.subscribe_method(events.on_scroll, canvas_layout_scroll, unsafe { c })
-	subscriber.subscribe_method(events.on_key_down, canvas_layout_key_down, unsafe { c })
-	subscriber.subscribe_method(events.on_char, canvas_layout_char, unsafe { c })
+	subscriber.subscribe_method(events.on_click, canvas_layout_click, c)
+	subscriber.subscribe_method(events.on_mouse_down, canvas_layout_mouse_down, c)
+	subscriber.subscribe_method(events.on_mouse_up, canvas_layout_mouse_up, c)
+	subscriber.subscribe_method(events.on_mouse_move, canvas_layout_mouse_move, c)
+	subscriber.subscribe_method(events.on_scroll, canvas_layout_scroll, c)
+	subscriber.subscribe_method(events.on_key_down, canvas_layout_key_down, c)
+	subscriber.subscribe_method(events.on_char, canvas_layout_char, c)
 	$if android {
-		subscriber.subscribe_method(events.on_touch_down, canvas_layout_mouse_down, unsafe { c })
-		subscriber.subscribe_method(events.on_touch_up, canvas_layout_mouse_up, unsafe { c })
-		subscriber.subscribe_method(events.on_touch_move, canvas_layout_mouse_move, unsafe { c })
+		subscriber.subscribe_method(events.on_touch_down, canvas_layout_mouse_down, c)
+		subscriber.subscribe_method(events.on_touch_up, canvas_layout_mouse_up, c)
+		subscriber.subscribe_method(events.on_touch_move, canvas_layout_mouse_move, c)
 	}
 	if c.active_evt_mngr {
 		c.ui.window.evt_mngr.add_receiver(c, [events.on_mouse_down, events.on_mouse_move])
 	}
 	if c.delegate_evt_mngr {
 		c.ui.window.evt_mngr.add_receiver(c, [events.on_delegate])
-		subscriber.subscribe_method(events.on_delegate, canvas_layout_delegate, unsafe { c })
+		subscriber.subscribe_method(events.on_delegate, canvas_layout_delegate, c)
 	}
 	for mut child in c.children {
 		child.init(c)
@@ -239,7 +239,7 @@ fn (mut c CanvasLayout) set_root_layout() {
 	if mut c.parent is Window {
 		// TODO: before removing line below test if this is necessary
 		// c.ui.window = unsafe {c.parent }
-		mut window := unsafe { &Window(voidptr(c.parent)) }
+		mut window := unsafe { c.parent }
 		if c.is_root_layout {
 			window.root_layout = c
 			// window.update_layout()
@@ -255,24 +255,24 @@ fn (mut c CanvasLayout) set_root_layout() {
 @[manualfree]
 pub fn (mut c CanvasLayout) cleanup() {
 	mut subscriber := c.parent.get_subscriber()
-	subscriber.unsubscribe_method(events.on_click, unsafe { c })
-	subscriber.unsubscribe_method(events.on_mouse_down, unsafe { c })
-	subscriber.unsubscribe_method(events.on_mouse_up, unsafe { c })
-	subscriber.unsubscribe_method(events.on_mouse_move, unsafe { c })
-	subscriber.unsubscribe_method(events.on_scroll, unsafe { c })
-	subscriber.unsubscribe_method(events.on_key_down, unsafe { c })
-	subscriber.unsubscribe_method(events.on_char, unsafe { c })
+	subscriber.unsubscribe_method(events.on_click, c)
+	subscriber.unsubscribe_method(events.on_mouse_down, c)
+	subscriber.unsubscribe_method(events.on_mouse_up, c)
+	subscriber.unsubscribe_method(events.on_mouse_move, c)
+	subscriber.unsubscribe_method(events.on_scroll, c)
+	subscriber.unsubscribe_method(events.on_key_down, c)
+	subscriber.unsubscribe_method(events.on_char, c)
 	$if android {
-		subscriber.unsubscribe_method(events.on_touch_down, unsafe { c })
-		subscriber.unsubscribe_method(events.on_touch_up, unsafe { c })
-		subscriber.unsubscribe_method(events.on_touch_move, unsafe { c })
+		subscriber.unsubscribe_method(events.on_touch_down, c)
+		subscriber.unsubscribe_method(events.on_touch_up, c)
+		subscriber.unsubscribe_method(events.on_touch_move, c)
 	}
 	if c.active_evt_mngr {
 		c.ui.window.evt_mngr.rm_receiver(c, [events.on_mouse_down, events.on_mouse_move])
 	}
 	if c.delegate_evt_mngr {
 		c.ui.window.evt_mngr.rm_receiver(c, [events.on_delegate])
-		subscriber.unsubscribe_method(events.on_delegate, unsafe { c })
+		subscriber.unsubscribe_method(events.on_delegate, c)
 	}
 	if has_scrollview(c) {
 		c.ui.window.evt_mngr.rm_receiver(c, [events.on_scroll])

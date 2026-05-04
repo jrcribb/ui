@@ -151,9 +151,20 @@ pub fn is_children_have_widget(children []Widget) bool {
 
 // TODO: documentation
 pub fn (w Widget) is_in_parent_tree(parent Widget) bool {
-	// parent.id and w.parent.id are both accessible via the interface field.
-	// We don't need to unwrap to Layout — we can compare ids directly.
-	return w.parent.id == parent.id
+	if parent is Layout {
+		if w.parent.id == parent.id {
+			return true
+		} else {
+			// p := w.parent
+			// if p is Widget {
+			// 	wi := p as Widget
+
+			// }
+			return false
+		}
+	} else {
+		return false
+	}
 }
 
 // TODO: documentation

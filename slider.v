@@ -120,31 +120,31 @@ fn (mut s Slider) init(parent Layout) {
 			s.orientation, f64(s.min), f64(s.max), f64(s.val))
 	}
 	mut subscriber := parent.get_subscriber()
-	subscriber.subscribe_method(events.on_click, slider_click, unsafe { s })
-	subscriber.subscribe_method(events.on_key_down, slider_key_down, unsafe { s })
-	subscriber.subscribe_method(events.on_mouse_down, slider_mouse_down, unsafe { s })
-	subscriber.subscribe_method(events.on_mouse_up, slider_mouse_up, unsafe { s })
-	subscriber.subscribe_method(events.on_mouse_move, slider_mouse_move, unsafe { s })
+	subscriber.subscribe_method(events.on_click, slider_click, s)
+	subscriber.subscribe_method(events.on_key_down, slider_key_down, s)
+	subscriber.subscribe_method(events.on_mouse_down, slider_mouse_down, s)
+	subscriber.subscribe_method(events.on_mouse_up, slider_mouse_up, s)
+	subscriber.subscribe_method(events.on_mouse_move, slider_mouse_move, s)
 	s.ui.window.evt_mngr.add_receiver(s, [events.on_mouse_down])
 	$if android {
-		subscriber.subscribe_method(events.on_touch_down, slider_mouse_down, unsafe { s })
-		subscriber.subscribe_method(events.on_touch_up, slider_mouse_up, unsafe { s })
-		subscriber.subscribe_method(events.on_touch_move, slider_touch_move, unsafe { s })
+		subscriber.subscribe_method(events.on_touch_down, slider_mouse_down, s)
+		subscriber.subscribe_method(events.on_touch_up, slider_mouse_up, s)
+		subscriber.subscribe_method(events.on_touch_move, slider_touch_move, s)
 	}
 }
 
 @[manualfree]
 pub fn (mut s Slider) cleanup() {
 	mut subscriber := s.parent.get_subscriber()
-	subscriber.unsubscribe_method(events.on_click, unsafe { s })
-	subscriber.unsubscribe_method(events.on_key_down, unsafe { s })
-	subscriber.unsubscribe_method(events.on_mouse_down, unsafe { s })
-	subscriber.unsubscribe_method(events.on_mouse_up, unsafe { s })
-	subscriber.unsubscribe_method(events.on_mouse_move, unsafe { s })
+	subscriber.unsubscribe_method(events.on_click, s)
+	subscriber.unsubscribe_method(events.on_key_down, s)
+	subscriber.unsubscribe_method(events.on_mouse_down, s)
+	subscriber.unsubscribe_method(events.on_mouse_up, s)
+	subscriber.unsubscribe_method(events.on_mouse_move, s)
 	$if android {
-		subscriber.unsubscribe_method(events.on_touch_down, unsafe { s })
-		subscriber.unsubscribe_method(events.on_touch_up, unsafe { s })
-		subscriber.unsubscribe_method(events.on_touch_move, unsafe { s })
+		subscriber.unsubscribe_method(events.on_touch_down, s)
+		subscriber.unsubscribe_method(events.on_touch_up, s)
+		subscriber.unsubscribe_method(events.on_touch_move, s)
 	}
 	s.ui.window.evt_mngr.rm_receiver(s, [events.on_mouse_down])
 	unsafe { s.free() }

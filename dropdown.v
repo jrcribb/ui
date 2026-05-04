@@ -101,13 +101,13 @@ pub fn (mut dd Dropdown) init(parent Layout) {
 			dd.dropdown_height, texts, dd.selected_index)
 	}
 	mut subscriber := parent.get_subscriber()
-	subscriber.subscribe_method(events.on_click, dd_click, unsafe { dd })
-	subscriber.subscribe_method(events.on_key_down, dd_key_down, unsafe { dd })
-	subscriber.subscribe_method(events.on_mouse_down, dd_mouse_down, unsafe { dd })
-	subscriber.subscribe_method(events.on_mouse_move, dd_mouse_move, unsafe { dd })
+	subscriber.subscribe_method(events.on_click, dd_click, dd)
+	subscriber.subscribe_method(events.on_key_down, dd_key_down, dd)
+	subscriber.subscribe_method(events.on_mouse_down, dd_mouse_down, dd)
+	subscriber.subscribe_method(events.on_mouse_move, dd_mouse_move, dd)
 	$if android {
-		subscriber.subscribe_method(events.on_touch_down, dd_mouse_down, unsafe { dd })
-		subscriber.subscribe_method(events.on_touch_move, dd_mouse_move, unsafe { dd })
+		subscriber.subscribe_method(events.on_touch_down, dd_mouse_down, dd)
+		subscriber.subscribe_method(events.on_touch_move, dd_mouse_move, dd)
 	}
 	dd.ui.window.evt_mngr.add_receiver(dd, [events.on_mouse_down])
 }
@@ -115,13 +115,13 @@ pub fn (mut dd Dropdown) init(parent Layout) {
 @[manualfree]
 fn (mut dd Dropdown) cleanup() {
 	mut subscriber := dd.parent.get_subscriber()
-	subscriber.unsubscribe_method(events.on_click, unsafe { dd })
-	subscriber.unsubscribe_method(events.on_key_down, unsafe { dd })
-	subscriber.unsubscribe_method(events.on_mouse_down, unsafe { dd })
-	subscriber.unsubscribe_method(events.on_mouse_move, unsafe { dd })
+	subscriber.unsubscribe_method(events.on_click, dd)
+	subscriber.unsubscribe_method(events.on_key_down, dd)
+	subscriber.unsubscribe_method(events.on_mouse_down, dd)
+	subscriber.unsubscribe_method(events.on_mouse_move, dd)
 	$if android {
-		subscriber.unsubscribe_method(events.on_touch_down, unsafe { dd })
-		subscriber.unsubscribe_method(events.on_touch_move, unsafe { dd })
+		subscriber.unsubscribe_method(events.on_touch_down, dd)
+		subscriber.unsubscribe_method(events.on_touch_move, dd)
 	}
 	dd.ui.window.evt_mngr.rm_receiver(dd, [events.on_mouse_down])
 	unsafe { dd.free() }

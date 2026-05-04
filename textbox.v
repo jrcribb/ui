@@ -243,15 +243,15 @@ pub fn (mut tb TextBox) init(parent Layout) {
 	}
 	// return widget
 	mut subscriber := parent.get_subscriber()
-	// subscriber.subscribe_method(events.on_click, tb_click, unsafe { tb })
-	subscriber.subscribe_method(events.on_key_down, tb_key_down, unsafe { tb })
-	subscriber.subscribe_method(events.on_char, tb_char, unsafe { tb })
-	// subscriber.subscribe_method(events.on_key_up, tb_key_up, unsafe { tb })
-	subscriber.subscribe_method(events.on_mouse_down, tb_mouse_down, unsafe { tb })
-	subscriber.subscribe_method(events.on_touch_down, tb_mouse_down, unsafe { tb })
-	subscriber.subscribe_method(events.on_mouse_move, tb_mouse_move, unsafe { tb })
-	subscriber.subscribe_method(events.on_mouse_up, tb_mouse_up, unsafe { tb })
-	subscriber.subscribe_method(events.on_touch_up, tb_mouse_up, unsafe { tb })
+	// subscriber.subscribe_method(events.on_click, tb_click, tb)
+	subscriber.subscribe_method(events.on_key_down, tb_key_down, tb)
+	subscriber.subscribe_method(events.on_char, tb_char, tb)
+	// subscriber.subscribe_method(events.on_key_up, tb_key_up, tb)
+	subscriber.subscribe_method(events.on_mouse_down, tb_mouse_down, tb)
+	subscriber.subscribe_method(events.on_touch_down, tb_mouse_down, tb)
+	subscriber.subscribe_method(events.on_mouse_move, tb_mouse_move, tb)
+	subscriber.subscribe_method(events.on_mouse_up, tb_mouse_up, tb)
+	subscriber.subscribe_method(events.on_touch_up, tb_mouse_up, tb)
 	tb.ui.window.evt_mngr.add_receiver(tb,
 		[events.on_mouse_down, events.on_mouse_move, events.on_scroll])
 }
@@ -259,15 +259,15 @@ pub fn (mut tb TextBox) init(parent Layout) {
 @[manualfree]
 fn (mut tb TextBox) cleanup() {
 	mut subscriber := tb.parent.get_subscriber()
-	// subscriber.unsubscribe_method(events.on_click, unsafe { tb })
-	subscriber.unsubscribe_method(events.on_key_down, unsafe { tb })
-	subscriber.unsubscribe_method(events.on_char, unsafe { tb })
-	// subscriber.unsubscribe_method(events.on_key_up, unsafe { tb })
-	subscriber.unsubscribe_method(events.on_mouse_down, unsafe { tb })
-	subscriber.unsubscribe_method(events.on_touch_down, unsafe { tb })
-	subscriber.unsubscribe_method(events.on_mouse_move, unsafe { tb })
-	subscriber.unsubscribe_method(events.on_mouse_up, unsafe { tb })
-	subscriber.unsubscribe_method(events.on_touch_up, unsafe { tb })
+	// subscriber.unsubscribe_method(events.on_click, tb)
+	subscriber.unsubscribe_method(events.on_key_down, tb)
+	subscriber.unsubscribe_method(events.on_char, tb)
+	// subscriber.unsubscribe_method(events.on_key_up, tb)
+	subscriber.unsubscribe_method(events.on_mouse_down, tb)
+	subscriber.unsubscribe_method(events.on_touch_down, tb)
+	subscriber.unsubscribe_method(events.on_mouse_move, tb)
+	subscriber.unsubscribe_method(events.on_mouse_up, tb)
+	subscriber.unsubscribe_method(events.on_touch_up, tb)
 	tb.ui.window.evt_mngr.rm_receiver(tb,
 		[events.on_mouse_down, events.on_mouse_move, events.on_scroll])
 	unsafe { tb.free() }

@@ -74,15 +74,15 @@ fn (mut s Switch) init(parent Layout) {
 		s.native_w = s.ui.window.native_widgets.create_switch(s.x, s.y, s.width, s.height, s.open)
 	}
 	mut subscriber := parent.get_subscriber()
-	subscriber.subscribe_method(events.on_key_down, sw_key_down, unsafe { s })
-	subscriber.subscribe_method(events.on_click, sw_click, unsafe { s })
+	subscriber.subscribe_method(events.on_key_down, sw_key_down, s)
+	subscriber.subscribe_method(events.on_click, sw_click, s)
 }
 
 @[manualfree]
 pub fn (mut s Switch) cleanup() {
 	mut subscriber := s.parent.get_subscriber()
-	subscriber.unsubscribe_method(events.on_key_down, unsafe { s })
-	subscriber.unsubscribe_method(events.on_click, unsafe { s })
+	subscriber.unsubscribe_method(events.on_key_down, s)
+	subscriber.unsubscribe_method(events.on_click, s)
 	unsafe { s.free() }
 }
 

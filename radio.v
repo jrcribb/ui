@@ -119,15 +119,15 @@ fn (mut r Radio) init(parent Layout) {
 			r.real_height, r.values, r.selected_index, r.title)
 	}
 	mut subscriber := parent.get_subscriber()
-	subscriber.subscribe_method(events.on_key_down, radio_key_down, unsafe { r })
-	subscriber.subscribe_method(events.on_click, radio_click, unsafe { r })
+	subscriber.subscribe_method(events.on_key_down, radio_key_down, r)
+	subscriber.subscribe_method(events.on_click, radio_click, r)
 }
 
 @[manualfree]
 pub fn (mut r Radio) cleanup() {
 	mut subscriber := r.parent.get_subscriber()
-	subscriber.unsubscribe_method(events.on_key_down, unsafe { r })
-	subscriber.unsubscribe_method(events.on_click, unsafe { r })
+	subscriber.unsubscribe_method(events.on_key_down, r)
+	subscriber.unsubscribe_method(events.on_click, r)
 	unsafe { r.free() }
 }
 

@@ -102,15 +102,15 @@ pub fn (mut cb CheckBox) init(parent Layout) {
 			cb.text, cb.checked)
 	}
 	mut subscriber := parent.get_subscriber()
-	subscriber.subscribe_method(events.on_key_down, cb_key_down, unsafe { cb })
-	subscriber.subscribe_method(events.on_click, cb_click, unsafe { cb })
+	subscriber.subscribe_method(events.on_key_down, cb_key_down, cb)
+	subscriber.subscribe_method(events.on_click, cb_click, cb)
 }
 
 @[manualfree]
 pub fn (mut cb CheckBox) cleanup() {
 	mut subscriber := cb.parent.get_subscriber()
-	subscriber.unsubscribe_method(events.on_key_down, unsafe { cb })
-	subscriber.unsubscribe_method(events.on_click, unsafe { cb })
+	subscriber.unsubscribe_method(events.on_key_down, cb)
+	subscriber.unsubscribe_method(events.on_click, cb)
 	unsafe { cb.free() }
 }
 

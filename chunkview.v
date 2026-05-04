@@ -432,12 +432,8 @@ pub fn centerchunk(p AlignChunkParams) VerticalAlignChunk {
 
 fn (mut c VerticalAlignChunk) init(cv &ChunkView) {
 	for mut chunk in c.chunks {
-		if chunk is ChunkContainer {
-			ptr := voidptr(chunk)
-			cc := unsafe { &ChunkContainer(ptr) }
-			unsafe {
-				cc.container = c
-			}
+		if mut chunk is ChunkContainer {
+			chunk.container = c
 		}
 		chunk.init(cv)
 	}
@@ -665,12 +661,8 @@ fn (mut c RowChunk) init(cv &ChunkView) {
 		c.container = cv
 	}
 	for mut chunk in c.chunks {
-		if chunk is ChunkContainer {
-			ptr := voidptr(chunk)
-			cc := unsafe { &ChunkContainer(ptr) }
-			unsafe {
-				cc.container = c
-			}
+		if mut chunk is ChunkContainer {
+			chunk.container = c
 		}
 		chunk.init(cv)
 	}
